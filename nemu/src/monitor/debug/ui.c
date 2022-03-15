@@ -124,7 +124,7 @@ static int cmd_info(char *args) {
     printf("eip:  0x%08x    %-10d\n", cpu.eip, cpu.eip);
   }
   else if(strcmp(args,"w") == 0) {
-    printf("Not supported at the moment\n");
+    show_wp();
   }
 	else {
     printf("Input invalid command!\n");
@@ -177,7 +177,7 @@ static int cmd_w(char *args) {
     printf("Input invalid command!\n");
   }
   else {
-    insert_wp(args);
+    create_wp(args);
   }
   return 0;
 }

@@ -142,18 +142,18 @@ int * point_changed() {
   WP *wp = head;
   bool success;
   uint32_t val;
-  static int changed_point[NR_WP];
+  static int points[NR_WP];
   int i = 0;
 
   while (wp != NULL) {
     val = expr(wp->exp, &success);
     if (val != wp->value) {
       wp->value = val;
-      changed_point[i++] = wp->NO;
+      points[i++] = wp->NO;
     }
       wp = wp->next;
   }
-  changed_point[i] = 0;
+  points[i] = 0;
 
-  return no;
+  return points;
 }
