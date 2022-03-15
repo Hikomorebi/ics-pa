@@ -283,6 +283,7 @@ int find_dominant_operator(int p, int q) {
       continue;
     else if(priority(tokens[i].type)<=now_priority){
       now_position = i;
+      printf("GG%d\n",i);
     }
   }
   return now_position;
