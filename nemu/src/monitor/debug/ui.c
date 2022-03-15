@@ -99,16 +99,16 @@ static int cmd_info(char *args) {
     return 0;
   }
   if(strcmp(args,"r") == 0) {
-    printf("eax:  0x%-10x    %-10d\n", cpu.eax, cpu.eax);
-    printf("edx:  0x%-10x    %-10d\n", cpu.edx, cpu.edx);
-    printf("ecx:  0x%-10x    %-10d\n", cpu.ecx, cpu.ecx);
-    printf("ebx:  0x%-10x    %-10d\n", cpu.ebx, cpu.ebx);
-    printf("ebp:  0x%-10x    %-10d\n", cpu.ebp, cpu.ebp);
-    printf("esi:  0x%-10x    %-10d\n", cpu.esi, cpu.esi);
-    printf("esp:  0x%-10x    %-10d\n", cpu.esp, cpu.esp);
-    printf("eip:  0x%-10x    %-10d\n", cpu.eip, cpu.eip);
+    printf("eax:  0x%08x    %-10d\n", cpu.eax, cpu.eax);
+    printf("edx:  0x%08x    %-10d\n", cpu.edx, cpu.edx);
+    printf("ecx:  0x%10x    %-10d\n", cpu.ecx, cpu.ecx);
+    printf("ebx:  0x%10x    %-10d\n", cpu.ebx, cpu.ebx);
+    printf("ebp:  0x%10x    %-10d\n", cpu.ebp, cpu.ebp);
+    printf("esi:  0x%10x    %-10d\n", cpu.esi, cpu.esi);
+    printf("esp:  0x%10x    %-10d\n", cpu.esp, cpu.esp);
+    printf("eip:  0x%10x    %-10d\n", cpu.eip, cpu.eip);
   }
-  else if(strcmp(args,"r") == 0) {
+  else if(strcmp(args,"w") == 0) {
     printf("Not supported at the moment\n");
   }
 	else {
