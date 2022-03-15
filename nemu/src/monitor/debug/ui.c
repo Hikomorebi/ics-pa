@@ -9,6 +9,9 @@
 
 int trans(char *e);
 void cpu_exec(uint64_t);
+uint32_t expr(char *e, bool *success);
+void init_regex();
+uint32_t vaddr_read(vaddr_t addr, int len);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {

@@ -3,13 +3,15 @@
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
+#include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <regex.h>
 
 enum {
   TK_NOTYPE = 256, TK_EQ , HEX , NUM , REG , TK_AND , TK_OR , TK_NEQ , TK_MINUS
 
-  /* TODO: Add more token types */
+  /* TODO: Add more tokens types */
 
 };
 
@@ -60,7 +62,7 @@ void init_regex() {
   }
 }
 
-typedef struct token {
+typedef struct tokens {
   int type;
   char str[32];
 } Token;
@@ -89,8 +91,8 @@ static bool make_token(char *e) {
         tokens[nr_token].type = rules[i].token_type;
 
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
+        /* TODO: Now a new tokens is recognized with rules[i]. Add codes
+         * to record the tokens in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
 
@@ -105,13 +107,15 @@ static bool make_token(char *e) {
             }
             else {
               for(int j=0;j<substr_len;++j) {
-                tokens[nr_token].str[i] = substr_start[i];
+                tokens[nr_token].str[j] = substr_start[j];
               }
-              tokens[nr_token].str[substr_len] = '\0';
+              tokens[nr_token++].str[substr_len] = '\0';
             }
             break;
 
-          default: break;
+          default: 
+            nr_token++;
+            break;
         }
 
         break;
@@ -125,12 +129,12 @@ static bool make_token(char *e) {
   }
   assert(nr_token>0);
   if(tokens[0].type == '-') {
-    token[0].type = TK_MINUS;
+    tokens[0].type = TK_MINUS;
   }
 
   for(int j=1;j<nr_token;++j) {
-    if(token[j].type == '-' && token[j-1].type != ')' && ( token[j-1].type > REG || token[j-1].type < HEX) {
-      token[j].type = TK_MINUS;
+    if(tokens[j].type == '-' && tokens[j-1].type != ')' && ( tokens[j-1].type > REG || tokens[j-1].type < HEX)) {
+      tokens[j].type = TK_MINUS;
     }
 
   }
@@ -144,6 +148,7 @@ uint32_t eval(int p, int q);
 int priority(int type);
 int find_dominant_operator(int p, int q);
 bool check_parentheses(int p, int q);
+uint32_t get_num(char str);
 
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -165,7 +170,7 @@ uint32_t expr(char *e, bool *success) {
 }
 bool parenthesis_right() {
   int nums = 0;
-  for (int i = 0; i < nr_token; ++) {
+  for (int i = 0; i < nr_token; ++i) {
     if (tokens[i].type == '(')
       nums++;
     else if (tokens[i].type == ')')
@@ -201,7 +206,7 @@ uint32_t eval(int p, int q) {
       len = strlen(tokens[p].str);
       cnt = 1;
       for (i = len-1; i >= 0; i--) {
-        sum = sum + cnt * getnum(tokens[p].str[i]);
+        sum = sum + cnt * get_num(tokens[p].str[i]);
         cnt *= 16;
       }
       return sum;
@@ -213,7 +218,7 @@ uint32_t eval(int p, int q) {
   else {
     int op = find_dominant_operator(p, q);
     if(op == -1) {
-      assert(token[p].type == TK_MINUS);
+      assert(tokens[p].type == TK_MINUS);
       return -eval(p+1,q);
     }
     //printf("op = %d\n", op);
@@ -264,19 +269,19 @@ bool check_parentheses(int p, int q) {
 int find_dominant_operator(int p, int q) {
   int i,nums=0,now_priority=6,now_position=-1;
   for(i=p;i<=q;++i) {
-    if(token[i].type == '(') {
+    if(tokens[i].type == '(') {
       nums++;
       continue;
     }
-    else if(token[i].type == ')') {
+    else if(tokens[i].type == ')') {
       nums--;
       continue;
     }
     else if(nums > 0) 
       continue;
-    else if(priority(token[i].type)==0)
+    else if(priority(tokens[i].type)==0)
       continue;
-    else if(priority(token[i].type)<=now_priority){
+    else if(priority(tokens[i].type)<=now_priority){
       now_position = i;
     }
   }
@@ -304,6 +309,17 @@ int priority(int type) {
     case '/':
       return 5;
     default:
-      asssert(0);
+      assert(0);
   }
+}
+
+uint32_t get_num(char str)
+{
+  if (str >= '0' && str <= '9') 
+    return str - '0';
+  else if (str >= 'a' && str <= 'f') 
+    return str - 'a' + 10;
+  else if (str >= 'A' && str <= 'F') 
+    return str - 'A' + 10;
+  return 0;
 }
