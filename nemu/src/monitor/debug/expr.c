@@ -267,7 +267,7 @@ bool check_parentheses(int p, int q) {
   return true;
 }
 int find_dominant_operator(int p, int q) {
-  int i,nums=0,now_priority=6,now_position=-1;
+  int i,nums=0,now_priority=6,now_position=-1,temp;
   for(i=p;i<=q;++i) {
     if(tokens[i].type == '(') {
       nums++;
@@ -281,10 +281,9 @@ int find_dominant_operator(int p, int q) {
       continue;
     else if(priority(tokens[i].type)==0)
       continue;
-    else if(priority(tokens[i].type)<=now_priority){
-      now_priority = i;
-      printf("GG%d\n",i);
-printf("%d,%d\n",priority(tokens[i].type),i);
+    else if((temp=priority(tokens[i].type))<=now_priority){
+      now_position = i;
+      now_priority = temp;
     }
   }
   return now_position;
