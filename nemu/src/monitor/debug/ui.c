@@ -94,29 +94,26 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
-      char *arg = strtok(NULL," ");
-       if(strcmp(arg,"r") == 0){//打印所有寄存器
-//		cpu.gpr[0]._32 = 20;
-
-			for(int i = 0; i < 8; i++) {
-  				  printf("%s\t0x%08x\t%u\n",regsl[i],cpu.gpr[i]._32,cpu.gpr[i]._32);	       
-		  	 }
-
-			for(int i = 0; i < 8; i++) {
-				 printf("%s\t0x%04x\t%u\n",regsw[i],cpu.gpr[i]._16,cpu.gpr[i]._16);
-			 }
-
-			for(int i = 0; i < 8; i++) {
-				 printf("%s\t0x%02x\t%u\n",regsb[i],cpu.gpr[i%4]._8[i/4],cpu.gpr[i%4]._8[i/4]);
-
-			}
-			printf("\neip\t0x%08x\t%u\n",cpu.eip,cpu.eip);
-	 	}
-		else if(strcmp(arg,"w") == 0) {
-		}
-		else {
-		    printf("Please check info arguments !\n");
-		}
+  if(args == NULL) {
+    printf("Please input r or w\n");
+    return 0;
+  }
+  if(strcmp(args,"r") == 0) {
+    printf("eax:  0x%08x    %-10d\n", cpu.eax, cpu.eax);
+    printf("edx:  0x%08x    %-10d\n", cpu.edx, cpu.edx);
+    printf("ecx:  0x%08x    %-10d\n", cpu.ecx, cpu.ecx);
+    printf("ebx:  0x%08x    %-10d\n", cpu.ebx, cpu.ebx);
+    printf("ebp:  0x%08x    %-10d\n", cpu.ebp, cpu.ebp);
+    printf("esi:  0x%08x    %-10d\n", cpu.esi, cpu.esi);
+    printf("esp:  0x%08x    %-10d\n", cpu.esp, cpu.esp);
+    printf("eip:  0x%08x    %-10d\n", cpu.eip, cpu.eip);
+  }
+  else if(strcmp(args,"w") == 0) {
+    printf("Not supported at the moment\n");
+  }
+	else {
+    printf("Please check info arguments !\n");
+	}
 		return 0;
 }
 
