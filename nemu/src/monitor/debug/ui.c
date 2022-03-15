@@ -8,6 +8,9 @@
 #include <readline/history.h>
 
 int trans(char *e);
+void show_wp();
+void create_wp(char *args);
+void delete_wp(int no);
 void cpu_exec(uint64_t);
 uint32_t expr(char *e, bool *success);
 void init_regex();
@@ -45,6 +48,8 @@ static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
   char *name;
@@ -58,6 +63,8 @@ static struct {
   {"info" , "Display the register status and the watchpoint information" , cmd_info },
   { "x", "Scan memory", cmd_x},
   { "p","Expression evaluation", cmd_p},
+  { "w", "Create a watchpoint", cmd_w},
+  { "d", "Delete a watchpoint", cmd_d},
 
   /* TODO: Add more commands */
 
@@ -147,7 +154,7 @@ static int cmd_x(char *args) {
 
 static int cmd_p(char *args) {
   if (args == NULL) {
-    printf("Input invalid command! Please input the expression.\n");
+    printf("Input invalid command!\n");
   }
   else {
     init_regex();
@@ -162,6 +169,26 @@ static int cmd_p(char *args) {
     else {
       printf("Invalid expression : %s\n",args);
     }
+  }
+  return 0;
+}
+static int cmd_w(char *args) {
+  if (args == NULL) {
+    printf("Input invalid command!\n");
+  }
+  else {
+    insert_wp(args);
+  }
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  if (args == NULL) {
+    printf("Input invalid command!\n");
+  }
+  else {
+    int no = atoi(args);
+    delete_wp(no);
   }
   return 0;
 }
@@ -218,4 +245,5 @@ int trans(char *e) {
 
   return num;
 }
+
 
