@@ -134,7 +134,7 @@ void show_wp() {
   printf("NO    expression    value\n");
   wp = head;
   while (wp != NULL) {
-    printf("%-5d %-13s %08x\n", wp->NO, wp->exp, wp->value);
+    printf("%-5d %-13s 0x%08x\n", wp->NO, wp->exp, wp->value);
     wp = wp->next;
   }
 }
