@@ -142,7 +142,8 @@ static int cmd_x(char *args) {
     char *exp;
     num = atoi(strtok(NULL, " "));
     exp = strtok(NULL, " ");
-    addr = trans(exp);
+    bool success;
+    addr = expr(exp,&success);
 
     for (i = 0; i < num; i++) {
       printf("0x%08x\n", vaddr_read(addr, 4));
@@ -232,19 +233,6 @@ void ui_mainloop(int is_batch_mode) {
   }
 }
 
-int trans(char *e) {
-  int len, num, i, j;
-  len = strlen(e);
-  num = 0;
-  j = 1;
 
-  for (i = len-1; i > 1; i--) {
-    num += (e[i]-'0')*j;
-    j *= 16;
-  }
-//  printf("num = %d\n", num);
-
-  return num;
-}
 
 
