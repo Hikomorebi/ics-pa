@@ -144,7 +144,6 @@ int * point_changed() {
   uint32_t val;
   static int points[NR_WP];
   int i = 0;
-  points[0]= -1;
 
   while (wp != NULL) {
     val = expr(wp->exp, &success);
@@ -154,7 +153,7 @@ int * point_changed() {
     }
       wp = wp->next;
   }
-  points[i] = 0;
+  points[i] = -1;
 
   return points;
 }
