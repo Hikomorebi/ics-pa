@@ -114,14 +114,15 @@ static int cmd_info(char *args) {
     return 0;
   }
   if(strcmp(args,"r") == 0) {
-    printf("eax:  0x%08x\t|ax:  0x%08x\t|al:  0x%08x\n", cpu.eax, reg_w(R_EAX),reg_b(R_AL));
-    printf("edx:  0x%08x    %-10d\n", cpu.edx, cpu.edx);
-    printf("ecx:  0x%08x    %-10d\n", cpu.ecx, cpu.ecx);
-    printf("ebx:  0x%08x    %-10d\n", cpu.ebx, cpu.ebx);
-    printf("ebp:  0x%08x    %-10d\n", cpu.ebp, cpu.ebp);
-    printf("esi:  0x%08x    %-10d\n", cpu.esi, cpu.esi);
-    printf("esp:  0x%08x    %-10d\n", cpu.esp, cpu.esp);
-    printf("eip:  0x%08x    %-10d\n", cpu.eip, cpu.eip);
+    printf("eax:  0x%08x\t|ax:  0x%08x\t|al:  0x%08x\n", reg_l(R_EAX), reg_w(R_AX),reg_b(R_AL));
+    printf("ecx:  0x%08x\t|cx:  0x%08x\t|cl:  0x%08x\n", reg_l(R_ECX), reg_w(R_CX),reg_b(R_CL));
+    printf("edx:  0x%08x\t|dx:  0x%08x\t|dl:  0x%08x\n", reg_l(R_EDX), reg_w(R_DX),reg_b(R_DL));
+    printf("ebx:  0x%08x\t|bx:  0x%08x\t|bl:  0x%08x\n", reg_l(R_EBX), reg_w(R_BX),reg_b(R_BL));
+    printf("esp:  0x%08x\t|sp:  0x%08x\t|ah:  0x%08x\n", reg_l(R_ESP), reg_w(R_SP),reg_b(R_AH));
+    printf("ebp:  0x%08x\t|bp:  0x%08x\t|ch:  0x%08x\n", reg_l(R_EBP), reg_w(R_BP),reg_b(R_CH));
+    printf("esi:  0x%08x\t|si:  0x%08x\t|dh:  0x%08x\n", reg_l(R_ESI), reg_w(R_SI),reg_b(R_DH));
+    printf("edi:  0x%08x\t|di:  0x%08x\t|bh:  0x%08x\n", reg_l(R_EDI), reg_w(R_DI),reg_b(R_BH));
+    printf("eip:  0x%08x\n", cpu.eip);
   }
   else if(strcmp(args,"w") == 0) {
     show_wp();
