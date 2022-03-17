@@ -9,7 +9,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ , HEX , NUM , REG , TK_AND , TK_OR , TK_NEQ , TK_MINUS
+  TK_NOTYPE = 256, TK_EQ , HEX , NUM , REG , TK_AND , TK_OR , TK_NEQ , TK_MINUS , TK_DER
 
   /* TODO: Add more tokens types */
 
@@ -131,13 +131,16 @@ static bool make_token(char *e) {
   assert(nr_token>0);
   if(tokens[0].type == '-') {
     tokens[0].type = TK_MINUS;
+  } 
+  else if(tokens[0].type == '*') {
+    tokens[0].type = TK_DER;
   }
 
   for(int j=1;j<nr_token;++j) {
-    if(tokens[j].type == '-' && tokens[j-1].type != ')' && ( tokens[j-1].type > REG || tokens[j-1].type < HEX)) {
+    if(tokens[j].type == '-' && tokens[j-1].type != ')' && ( tokens[j-1].type > REG || tokens[j-1].type < HEX)) 
       tokens[j].type = TK_MINUS;
-    }
-
+    else if(tokens[j].type == '*' && tokens[j-1].type != ')' && ( tokens[j-1].type > REG || tokens[j-1].type < HEX))
+      tokens[j].type = TK_DER;
   }
 
   return true;
@@ -219,8 +222,11 @@ uint32_t eval(int p, int q) {
   else {
     int op = find_dominant_operator(p, q);
     if(op == -1) {
-      assert(tokens[p].type == TK_MINUS);
-      return -eval(p+1,q);
+      if(tokens[p].type == TK_MINUS) 
+        return -eval(p+1,q);
+      else if(tokens[p].type == TK_DER);
+        return vaddr_read(eval(p+1,q),4);
+      assert(0);
     }
     //printf("op = %d\n", op);
     uint32_t val1 = eval(p, op - 1);
@@ -296,6 +302,7 @@ int priority(int type) {
     case REG:
     case HEX:
     case TK_MINUS:
+    case TK_DER:
       return 0;
     case TK_OR:
       return 1;
