@@ -59,7 +59,7 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Execute n step" , cmd_si},
+  { "si", "Execute N instructions,the default number is 1" , cmd_si},
   {"info" , "Display the register status and the watchpoint information" , cmd_info },
   { "x", "Scan memory", cmd_x},
   { "p","Expression evaluation", cmd_p},
@@ -114,7 +114,7 @@ static int cmd_info(char *args) {
     return 0;
   }
   if(strcmp(args,"r") == 0) {
-    printf("eax:  0x%08x    %-10d\n", cpu.eax, cpu.eax);
+    printf("eax:  0x%08x\t|ax:  0x%08x\t|al:  0x%08x\n", cpu.eax, reg_w(R_EAX),reg_b(R_AL));
     printf("edx:  0x%08x    %-10d\n", cpu.edx, cpu.edx);
     printf("ecx:  0x%08x    %-10d\n", cpu.ecx, cpu.ecx);
     printf("ebx:  0x%08x    %-10d\n", cpu.ebx, cpu.ebx);
