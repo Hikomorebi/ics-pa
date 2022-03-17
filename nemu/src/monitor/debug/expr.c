@@ -34,8 +34,8 @@ static struct rule {
   {"\\/",'/'},
   {"\\(",'('},
   {"\\)",')'},
-  //{"\\$e([abcd]x)|([sb]p)|([sd]i)|(ip)",REG},
-  {"\\$eip",REG},
+  {"\\$e(([abcd]x)|([sb]p)|([sd]i)|(ip))",REG},
+  //{"\\$eip",REG},
   {"&&",TK_AND},
   {"\\|\\|",TK_OR},
   {"!=",TK_NEQ}
