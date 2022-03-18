@@ -34,7 +34,8 @@ static struct rule {
   {"\\/",'/'},
   {"\\(",'('},
   {"\\)",')'},
-  {"\\$e(([abcd]x)|([sb]p)|([sd]i)|(ip))",REG},
+  {"\\$[a-z]+"},
+  //{"\\$e(([abcd]x)|([sb]p)|([sd]i)|(ip))",REG},
   //{"\\$eip",REG},
   {"&&",TK_AND},
   {"\\|\\|",TK_OR},
@@ -204,6 +205,20 @@ uint32_t eval(int p, int q) {
       else if (strcmp(tokens[p].str, "$esi") == 0)  return cpu.esi;
       else if (strcmp(tokens[p].str, "$edi") == 0)  return cpu.edi;
       else if (strcmp(tokens[p].str, "$eip") == 0)  return cpu.eip;
+      else if (strcmp(tokens[p].str, "$ah") == 0)  return reg_b(R_AH);
+      else if (strcmp(tokens[p].str, "$al") == 0)  return reg_b(R_AL);
+      else if (strcmp(tokens[p].str, "$bh") == 0)  return reg_b(R_BH);
+      else if (strcmp(tokens[p].str, "$bl") == 0)  return reg_b(R_AH);
+      else if (strcmp(tokens[p].str, "$ch") == 0)  return reg_b(R_CH);
+      else if (strcmp(tokens[p].str, "$cl") == 0)  return reg_b(R_CL);
+      else if (strcmp(tokens[p].str, "$dh") == 0)  return reg_b(R_DH);
+      else if (strcmp(tokens[p].str, "$dl") == 0)  return reg_b(R_DL);
+      else if (strcmp(tokens[p].str, "$ax") == 0)  return reg_w(R_AX);
+      else if (strcmp(tokens[p].str, "$bx") == 0)  return reg_w(R_BX);
+      else if (strcmp(tokens[p].str, "$cx") == 0)  return reg_w(R_CX);
+      else if (strcmp(tokens[p].str, "$dx") == 0)  return reg_w(R_DX);
+      else if (strcmp(tokens[p].str, "$sp") == 0)  return reg_w(R_SP);
+      else if (strcmp(tokens[p].str, "$bp") == 0)  return reg_w(R_BP);
     }
     else if (tokens[p].type == HEX) {
       int cnt, i, len, sum = 0;
