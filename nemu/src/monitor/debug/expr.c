@@ -219,6 +219,7 @@ uint32_t eval(int p, int q) {
       else if (strcmp(tokens[p].str, "$dx") == 0)  return reg_w(R_DX);
       else if (strcmp(tokens[p].str, "$sp") == 0)  return reg_w(R_SP);
       else if (strcmp(tokens[p].str, "$bp") == 0)  return reg_w(R_BP);
+      else  assert(0);
     }
     else if (tokens[p].type == HEX) {
       int cnt, i, len, sum = 0;
