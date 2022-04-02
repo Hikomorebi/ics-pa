@@ -1,6 +1,6 @@
 #include "cpu/exec.h"
 
-make_EHelper(mov);
+
 
 make_EHelper(operand_size);
 
@@ -23,6 +23,7 @@ make_EHelper(in);
 make_EHelper(out);
 
 //data-move.c
+make_EHelper(mov);
 make_EHelper(push);
 make_EHelper(pop);
 make_EHelper(lea);
@@ -30,6 +31,7 @@ make_EHelper(leave);
 make_EHelper(cltd);
 
 //arith.c
+make_EHelper(add);
 make_EHelper(sub);
 make_EHelper(inc);
 make_EHelper(dec);
