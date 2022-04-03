@@ -167,7 +167,7 @@ void difftest_step(uint32_t eip) {
   if(r.edi != cpu.edi)
     diff = true;
   if (diff) {
-    Log("different ini general register: when nemu.eip=0x%08x\n",cpu.eip);
+    Log("different in general register: when nemu.eip=0x%08x\n",cpu.eip);
     //nemu_state = NEMU_END;
   }
   if(r.eip != cpu.eip) {
