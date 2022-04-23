@@ -83,3 +83,21 @@ make_EHelper(not) {
   operand_write(id_dest, &id_dest->val);
   print_asm_template1(not);
 }
+make_EHelper(rol){
+  rtl_mv(&t0,&id_src->val);
+	rtl_mv(&t3,&id_dest->val);
+	while(t0 != 0){
+		rtl_msb(&t1,&t3,id_dest->width);
+    t3 = 2*t3 + t1;
+		rtl_subi(&t0,&t0,1);
+	}
+	operand_write(id_dest,&t3);
+
+	if(id_src->val == 1){
+    rtl_msb(&t1,&t3,id_dest->width);
+		rtl_get_CF(&t2);
+		rtl_li(&t0,1);
+		if(t1 != t2)rtl_set_OF(&t0);
+		else rtl_set_OF(&tzero);
+	}
+}
