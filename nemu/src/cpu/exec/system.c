@@ -12,7 +12,6 @@ make_EHelper(lidt) {
   t1 = id_dest->val + 2;
   rtl_lm(&t0,&t1,4);
   cpu.idtr.base = t0;
-  printf("%d\n%d\n",cpu.idtr.limit,cpu.idtr.base);
   print_asm_template1(lidt);
 }
 
