@@ -16,7 +16,6 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 	rtl_push(&t0);
   //获取门描述符的地址
   vaddr_t gate_addr=cpu.idtr.base + NO * sizeof(GateDesc);
-  printf("%d\n%d\n%d\n",gate_addr,cpu.idtr.base,cpu.idtr.limit);
   assert(gate_addr <= cpu.idtr.base + cpu.idtr.limit);
 
   //获取处理程序目标地址
