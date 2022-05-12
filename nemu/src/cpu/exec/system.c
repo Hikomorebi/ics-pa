@@ -5,13 +5,13 @@ void diff_test_skip_nemu();
 extern void raise_intr(uint8_t NO, vaddr_t ret_addr);
 make_EHelper(lidt) {
   //TODO();
-	cpu.idtr.limit = vaddr_read(id_dest->addr, 2);
-	if (decoding.is_operand_size_16) {
-		cpu.idtr.base = vaddr_read(id_dest->addr + 2, 4) & 0x00ffffff;
-	}
-	else {
-		cpu.idtr.base = vaddr_read(id_dest->addr + 2, 4);	
-	}
+  t1 = id_dest->val;
+  rtl_lm(&t0,&t1,2);
+	cpu.idtr.limit = t0;
+
+  t1 = id_dest->val + 2;
+  rtl_lm(&t0,&t1,4);
+  cpu.idtr.base = t0;
   printf("%d\n%d\n",cpu.idtr.limit,cpu.idtr.base);
   print_asm_template1(lidt);
 }
