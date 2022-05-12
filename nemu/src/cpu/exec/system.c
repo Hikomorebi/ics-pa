@@ -2,12 +2,19 @@
 
 void diff_test_skip_qemu();
 void diff_test_skip_nemu();
-
+extern void raise_intr(uint8_t NO, vaddr_t ret_addr);
 make_EHelper(lidt) {
-  TODO();
-
+  //TODO();
+	cpu.idtr.limit = vaddr_read(id_dest->addr, 2);
+	if (decoding.is_operand_size_16) {
+		cpu.idtr.base = vaddr_read(id_dest->addr + 2, 4) & 0x00ffffff;
+	}
+	else {
+		cpu.idtr.base = vaddr_read(id_dest->addr + 2, 4);	
+	}
   print_asm_template1(lidt);
 }
+
 
 make_EHelper(mov_r2cr) {
   TODO();
@@ -26,8 +33,9 @@ make_EHelper(mov_cr2r) {
 }
 
 make_EHelper(int) {
-  TODO();
-
+  //TODO();
+  uint8_t NO = id_dest->val & 0xff;
+  raise_intr(NO,decoding.seq_eip);
   print_asm("int %s", id_dest->str);
 
 #ifdef DIFF_TEST

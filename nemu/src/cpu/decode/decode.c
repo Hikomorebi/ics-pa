@@ -101,6 +101,10 @@ static inline make_DopHelper(O) {
   snprintf(op->str, OP_STR_SIZE, "0x%x", op->addr);
 #endif
 }
+make_DHelper(lidt_a) {
+  decode_op_a(eip,id_dest,true);
+}
+
 
 /* Eb <- Gb
  * Ev <- Gv
