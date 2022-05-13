@@ -27,19 +27,31 @@ void sys_exit(int a) {
   _halt(a);
 }
 int sys_write(int fd,void* buf,size_t len) {
-	int i = 0;
-	if (fd == 1 || fd == 2) {
+	// int i = 0;
+	// if (fd == 1 || fd == 2) {
+  //   Log("buffer:%s",(char*)buf);
+	// 	for(; len > 0; len--) {
+	// 		_putc(((char*)buf)[i]);
+	// 		i++;;
+	// 	}
+	// }
+  // else {
+  //   panic("Unhandled fd = %d in sys_write",fd);
+  //   return -1;
+  // }
+	// return i;
+  if(fd ==1 || fd ==2) {
+    char c;
     Log("buffer:%s",(char*)buf);
-		for(; len > 0; len--) {
-			_putc(((char*)buf)[i]);
-			i++;;
-		}
-	}
-  else {
-    panic("Unhandled fd = %d in sys_write",fd);
-    return -1;
+    for(int i=0;i<len;++i){
+      memcpy(&c,buf+i,1);
+      _putc(c);
+    }
+    return len;
   }
-	return i;
+  else
+    panic("Unhandled fd = %d in sys_write",fd);
+  return -1;
 }
 
 int sys_brk(int addr)

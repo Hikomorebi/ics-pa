@@ -31,27 +31,19 @@ int _write(int fd, void *buf, size_t count){
 }
 
 void *_sbrk(intptr_t increment){
-  // extern end;
-  // static uintptr_t old_pb = (uintptr_t)&end;
+  extern end;
+  static uintptr_t old_pb = (uintptr_t)&end;
 
-  // uintptr_t new_pb = old_pb + increment;
-  // int r = _syscall_(SYS_brk,new_pb,0,0);
-  // exit(0);
-  // if(r == 0){
-  //   uintptr_t temp = old_pb;
-  //   old_pb = new_pb;
-  //   return (void*)temp;
+  uintptr_t new_pb = old_pb + increment;
+  int r = _syscall_(SYS_brk,new_pb,0,0);
+  exit(0);
+  if(r == 0){
+    uintptr_t temp = old_pb;
+    old_pb = new_pb;
+    return (void*)temp;
 
-  // }
-  // return (void *)-1;
-	intptr_t old_pb = program_break;
-  if (_syscall_(SYS_brk, old_pb + increment, 0, 0) == 0) {
-		program_break += increment;	
-		return (void *)old_pb;
-	}
-	else {
-		return (void *)-1;
-	}
+  }
+  return (void *)-1;
 }
 
 int _read(int fd, void *buf, size_t count) {
