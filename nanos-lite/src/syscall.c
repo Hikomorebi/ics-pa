@@ -42,7 +42,7 @@ int sys_write(int fd,void* buf,size_t len) {
 	return i;
 }
 
-int sys_brk(int a)
+int sys_brk(int addr)
 {
   return 0;
 }
