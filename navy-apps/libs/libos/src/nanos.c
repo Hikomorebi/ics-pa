@@ -36,11 +36,9 @@ void *_sbrk(intptr_t increment){
 
   uintptr_t new_pb = old_pb + increment;
   int r = _syscall_(SYS_brk,new_pb,0,0);
-  printf("%d\n",r);
   if(r == 0){
     uintptr_t temp = old_pb;
     old_pb = new_pb;
-    printf("GGGGGGGGGGGGGGGG\n\n");
     return (void*)temp;
 
   }
