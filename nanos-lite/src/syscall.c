@@ -22,24 +22,16 @@ enum {
   SYS_gettimeofday
 };
 //#include "syscall.h"
-
+extern char _end;
+extern ssize_t fs_read(int fd, void *buf, size_t len);
+extern ssize_t fs_write(int fd, const void *buf, size_t len);
+extern int fs_open(const char *pathname, int flags, int mode);
+extern off_t fs_lseek(int fd, off_t offset, int whence);
+extern int fs_close(int fd);
 void sys_exit(int a) {
   _halt(a);
 }
 int sys_write(int fd,void* buf,size_t len) {
-	// int i = 0;
-	// if (fd == 1 || fd == 2) {
-  //   Log("buffer:%s",(char*)buf);
-	// 	for(; len > 0; len--) {
-	// 		_putc(((char*)buf)[i]);
-	// 		i++;;
-	// 	}
-	// }
-  // else {
-  //   panic("Unhandled fd = %d in sys_write",fd);
-  //   return -1;
-  // }
-	// return i;
   if(fd ==1 || fd ==2) {
     char c;
     Log("buffer:%s",(char*)buf);
@@ -49,6 +41,8 @@ int sys_write(int fd,void* buf,size_t len) {
     }
     return len;
   }
+  else if(fd>=3)
+    return fs_write(fd,buf,len);
   else
     panic("Unhandled fd = %d in sys_write",fd);
   return -1;
@@ -57,6 +51,18 @@ int sys_write(int fd,void* buf,size_t len) {
 int sys_brk(int addr)
 {
   return 0;
+}
+int sys_open(const char* filename) {
+  return fs_open(filename,0,0);
+}
+int sys_read(int fd,void* buf,size_t len) {
+  return fs_read(fd,buf,len);
+}
+int sys_close(int fd) {
+  return fs_close(fd);
+}
+int sys_lseek(int fd,off_t offset,int whence) {
+  return fs_lseek(fd,offset,whence);
 }
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
@@ -79,7 +85,18 @@ _RegSet* do_syscall(_RegSet *r) {
     case SYS_brk:
       result = sys_brk(a[1]);
       break;
-      
+    case SYS_open:
+      result = sys_open((char*)a[1]);
+      break;
+    case SYS_read:
+      result = sys_read(a[1],(void*)a[2],a[3]);
+      break;
+    case SYS_close:
+      result = sys_close(a[1]);
+      break;
+    case SYS_lseek:
+      result = sys_lseek(a[1],a[2],a[3]);
+      break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
   SYSCALL_ARG1(r) = result;
