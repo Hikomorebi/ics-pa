@@ -1,6 +1,7 @@
 #include "fs.h"
 extern void ramdisk_read(void *buf, off_t offset, size_t len);
 extern void ramdisk_write(const void *buf, off_t offset, size_t len);
+extern size_t events_read(void *buf, size_t len);
 void dispinfo_read(void* buf,off_t offset,size_t len);
 void fb_write(const void *buf, off_t offset, size_t len);
 typedef struct {
@@ -64,6 +65,9 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
 	if(fd < 3) {
     Log("arg invalid: fd < 3");
     return 0;
+  }
+  if(fd == FD_EVENTS) {
+    return events_read(buf,len);
   }
   int n = fs_filesz(fd) - get_open_offset(fd);
   if(n > len)
