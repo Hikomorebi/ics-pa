@@ -39,7 +39,7 @@ void *_sbrk(intptr_t increment){
   if(r == 0){
     uintptr_t temp = old_pb;
     old_pb = new_pb;
-        printf("GGGGGGGGGGGGGGGG\n\n");
+    printf("GGGGGGGGGGGGGGGG\n\n");
     return (void*)temp;
 
   }
