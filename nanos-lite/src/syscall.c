@@ -22,6 +22,7 @@ enum {
   SYS_gettimeofday
 };
 //#include "syscall.h"
+extern int mm_brk(uint32_t new_brk);
 extern char _end;
 extern ssize_t fs_read(int fd, void *buf, size_t len);
 extern ssize_t fs_write(int fd, const void *buf, size_t len);
@@ -49,7 +50,7 @@ int sys_write(int fd,void* buf,size_t len) {
 
 int sys_brk(int addr)
 {
-  return 0;
+  return mm_brk(addr);
 }
 int sys_open(const char* filename) {
   return fs_open(filename,0,0);
