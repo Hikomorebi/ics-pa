@@ -24,7 +24,8 @@ uintptr_t loader(_Protect *as, const char *filename) {
     fs_read(fd,pa,PGSIZE);
     va += PGSIZE;
   }
-  
+  Log("gg\n\n");
   fs_close(fd);
+  Log("ggwp\n\n");
   return (uintptr_t)DEFAULT_ENTRY;
 }
