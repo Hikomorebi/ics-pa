@@ -83,6 +83,7 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
 
 ssize_t fs_write(int fd,void* buf,size_t len) {
   assert(fd>=0 && fd<NR_FILES);
+  Log("hkhh\n\n");
 	if(fd < 3 || fd == FD_DISPINFO) {
     Log("arg invalid: fd < 3 || fd == FD_DISPINFO");
     return 0;
