@@ -10,9 +10,8 @@ uintptr_t loader(_Protect *as, const char *filename);
 
 void load_prog(const char *filename) {
   int i = nr_proc ++;
-  Log("aa\n\n");
   _protect(&pcb[i].as);
-  Log("bb\n\n");
+
   uintptr_t entry = loader(&pcb[i].as, filename);
 
   // TODO: remove the following three lines after you have implemented _umake()
@@ -25,6 +24,7 @@ void load_prog(const char *filename) {
   stack.end = stack.start + sizeof(pcb[i].stack);
 
   pcb[i].tf = _umake(&pcb[i].as, stack, stack, (void *)entry, NULL, NULL);
+    Log("aa\n\n");
 }
 
 _RegSet* schedule(_RegSet *prev) {
