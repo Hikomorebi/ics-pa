@@ -38,7 +38,7 @@ int sys_write(int fd,void* buf,size_t len) {
     char c;
     for(int i=0;i<len;++i){
       memcpy(&c,buf+i,1);
-      Log("c=%c",c);
+      Log("c=%d",c);
       _putc(c);
     }
     return len;
