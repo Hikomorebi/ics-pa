@@ -33,12 +33,11 @@ void sys_exit(int a) {
   _halt(a);
 }
 int sys_write(int fd,void* buf,size_t len) {
-  Log("len=%d",len);
   if(fd ==1 || fd ==2) {
     char c;
     for(int i=0;i<len;++i){
       memcpy(&c,buf+i,1);
-      Log("c=%d",c);
+      Log("buf+i=0x%08x",buf+i);
       _putc(c);
     }
     return len;
