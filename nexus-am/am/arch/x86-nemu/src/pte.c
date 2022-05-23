@@ -6,7 +6,7 @@ static PDE kpdirs[NR_PDE] PG_ALIGN;
 static PTE kptabs[PMEM_SIZE / PGSIZE] PG_ALIGN;
 static void* (*palloc_f)();
 static void (*pfree_f)(void*);
-
+extern void* memcpy(void *,const void *,int);
 _Area segments[] = {      // Kernel memory mappings
   {.start = (void*)0,          .end = (void*)PMEM_SIZE}
 };
@@ -88,5 +88,20 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+  //return NULL;
+  int arg1 = 0;
+  char *arg2 = NULL;
+  memcpy((void*)ustack.end - 4,(void*)arg2,4);
+  memcpy((void*)ustack.end - 8,(void*)arg2,4);
+  memcpy((void*)ustack.end - 12,(void*)arg1,4);
+  memcpy((void*)ustack.end - 16,(void*)arg1,4);
+
+  _RegSet tf;
+  tf.eflags = 0x02;
+  tf.cs = 8;
+  tf.eip = (uintptr_t)entry;
+  void *ptf = (void*)(ustack.end - 16 - sizeof(_RegSet));
+  memcpy(ptf,(void*)&tf,sizeof(_RegSet));
+
+  return (_RegSet*) ptf;
 }
