@@ -13,9 +13,7 @@ uint32_t loader(_Protect *, const char *);
 extern void load_prog(const char *filename);
 
 int main() {
-  Log("gg\n");
 #ifdef HAS_PTE
-
   init_mm();
 #endif
 
@@ -24,7 +22,6 @@ int main() {
 
   init_ramdisk();
 
-Log("gg\n");
   init_device();
 
 #ifdef HAS_ASYE
@@ -36,12 +33,9 @@ Log("gg\n");
 
   //uint32_t entry = loader(NULL, "/bin/hello");
   //((void (*)(void))entry)();
-  Log("gg\n");
-  load_prog("/bin/pal");
+  //load_prog("/bin/pal");
   load_prog("/bin/hello");
-  Log("gg\n");
   _trap();
-  Log("wp\n");
 
   panic("Should not reach here");
 }
