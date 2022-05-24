@@ -8,6 +8,7 @@ static const char *keyname[256] __attribute__((used)) = {
   _KEYS(NAME)
 };
 extern void get_screen(int* s_width,int * s_height);
+extern void switch_current_game();
 size_t events_read(void *buf, size_t len) {
   int key = _read_key();
 	bool down = false;
@@ -20,6 +21,10 @@ size_t events_read(void *buf, size_t len) {
 		unsigned long t = _uptime();
 		sprintf(buf, "t %d\n", t);
 	}
+  if (down && key == _KEY_F12) {
+    switch_current_game();
+    Log("F12 down : switch current geme!");
+  }
 	else {
 		//Log("I am here~\n");
 		sprintf(buf, "%s %s\n", down ? "kd" : "ku", keyname[key]);
