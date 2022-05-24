@@ -14,6 +14,7 @@ extern void load_prog(const char *filename);
 
 int main() {
 #ifdef HAS_PTE
+Log("gg\n");
   init_mm();
 #endif
 
@@ -22,6 +23,7 @@ int main() {
 
   init_ramdisk();
 
+Log("gg\n");
   init_device();
 
 #ifdef HAS_ASYE
@@ -33,7 +35,7 @@ int main() {
 
   //uint32_t entry = loader(NULL, "/bin/hello");
   //((void (*)(void))entry)();
-    Log("gg\n");
+  Log("gg\n");
   load_prog("/bin/pal");
   load_prog("/bin/hello");
   Log("gg\n");
