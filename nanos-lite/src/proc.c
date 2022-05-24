@@ -38,7 +38,7 @@ _RegSet* schedule(_RegSet *prev) {
   else
     current = &pcb[0];
   if(num >= frequency) {
-    current = &pcb[0];
+    current = &pcb[1];
     num = 0;
   }
   Log("ptr=0x%x\n",(uint32_t)current->as.ptr);
