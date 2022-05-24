@@ -17,15 +17,19 @@ size_t events_read(void *buf, size_t len) {
 		key ^= 0x8000;
 		down = true;
 	}
+  if (down && key == _KEY_F12) {
+    switch_current_game();
+    Log("F12 down : switch current geme!");
+  }
 	if (key == _KEY_NONE) {
 		unsigned long t = _uptime();
 		sprintf(buf, "t %d\n", t);
 	}
-
 	else {
 		//Log("I am here~\n");
 		sprintf(buf, "%s %s\n", down ? "kd" : "ku", keyname[key]);
 	}
+
 	return strlen(buf);
 }
 
