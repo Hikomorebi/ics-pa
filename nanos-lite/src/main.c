@@ -35,7 +35,9 @@ int main() {
   //((void (*)(void))entry)();
   load_prog("/bin/pal");
   load_prog("/bin/hello");
+  Log("gg\n");
   _trap();
+  Log("wp\n");
 
   panic("Should not reach here");
 }
