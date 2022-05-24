@@ -13,8 +13,9 @@ uint32_t loader(_Protect *, const char *);
 extern void load_prog(const char *filename);
 
 int main() {
+  Log("gg\n");
 #ifdef HAS_PTE
-Log("gg\n");
+
   init_mm();
 #endif
 
