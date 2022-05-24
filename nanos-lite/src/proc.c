@@ -3,7 +3,7 @@
 #define MAX_NR_PROC 4
 
 static PCB pcb[MAX_NR_PROC];
-static int nr_proc = 0;
+static int nr_proc = 2;
 PCB *current = NULL;
 
 uintptr_t loader(_Protect *as, const char *filename);
