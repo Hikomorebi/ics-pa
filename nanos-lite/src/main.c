@@ -31,8 +31,8 @@ int main() {
 
   init_fs();
 
-  uint32_t entry = loader(NULL, "/bin/hello");
-  ((void (*)(void))entry)();
+  //uint32_t entry = loader(NULL, "/bin/hello");
+  //((void (*)(void))entry)();
   load_prog("/bin/videotest");
 
   load_prog("/bin/hello");

@@ -7,7 +7,7 @@ static int nr_proc = 0;
 PCB *current = NULL;
 
 uintptr_t loader(_Protect *as, const char *filename);
-int current_game = 0;
+int current_game = 2;
 void switch_current_game() {
   current_game = 2-current_game;
   Log("current_game=%d",current_game);
@@ -35,7 +35,7 @@ _RegSet* schedule(_RegSet *prev) {
     current = &pcb[current_game];
   //current = &pcb[0];
   static int num = 0;
-  static const int frequency = 1000;
+  static const int frequency = 100000;
   if(current == &pcb[current_game])
     num++;
   else
