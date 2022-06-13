@@ -29,7 +29,6 @@ void load_prog(const char *filename) {
 }
 
 _RegSet* schedule(_RegSet *prev) {
-  return 0;
   if(current != NULL) 
     current->tf = prev;
   else
