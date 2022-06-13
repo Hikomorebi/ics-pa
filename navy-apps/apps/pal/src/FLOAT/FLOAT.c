@@ -4,29 +4,30 @@
 
 FLOAT F_mul_F(FLOAT a, FLOAT b)
 {
-  return ((uint64_t)a * (uint64_t)b) >> 16;
+  return ((uint64_t)a * b) >> 16;
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b)
 {
   assert(b != 0);
-  FLOAT x = Fabs(a);
-  FLOAT y = Fabs(b);
-  FLOAT ret = x / y;
-  x = x % y;
-
-  for (int i = 0; i < 16; i++) {
-    x <<= 1;
-    ret <<= 1;
-    if (x >= y) {
-      x -= y;
-      ret++;
+  int sign = 1;
+  a = a < 0 ? -a : a;
+  b = b < 0 ? -b : b;
+  if ((a ^ b) & (0x1 << 31))
+    sign = -1;
+  int res = a / b;
+  a %= b;
+  for (int i = 0; i < 16; i++)
+  {
+    a <<= 1;
+    res <<= 1;
+    if (a >= b)
+    {
+      a -= b;
+      res++;
     }
   }
-  if (((a ^ b) & 0x80000000) == 0x80000000) {
-    ret = -ret;
-  }
-  return ret;
+  return res * sign;
 }
 
 FLOAT f2F(float a)
@@ -40,38 +41,41 @@ FLOAT f2F(float a)
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
-  union float_ {
-    struct {
-      uint32_t man : 23;
+    struct my_float
+    {
+      uint32_t frac : 23;
       uint32_t exp : 8;
       uint32_t sign : 1;
     };
-    uint32_t val;
-  };
-  union float_ f;
-  f.val = *((uint32_t*)(void*)&a);
-  int exp = f.exp - 127;
-  FLOAT ret = 0;
-  if (exp == 128)
+
+  struct my_float *f = (struct my_float *)&a;
+  uint32_t res;
+  uint32_t frac;
+  int exp;
+  if ((f->exp & 0xff) == 0xff)
     assert(0);
-  if (exp >= 0) {
-    int mov = 7 - exp;
-    if (mov >= 0)
-      ret = (f.man | (1 << 23)) >> mov;
-    else
-      ret = (f.man | (1 << 23)) << (-mov);
+  else if (f->exp == 0)
+  {
+    exp = 1 - 127;
+    frac = (f->frac & 0x7fffff);
   }
   else
-    return 0;
-  return f.sign == 0 ? ret : -ret;
+  {
+    exp = f->exp - 127;
+    frac = (f->frac & 0x7fffff) | (1 << 23);
+  }
+  if (exp >= 7 && exp < 22)
+    res = frac << (exp - 7);
+  else if (exp < 7 && exp > -32)
+    res = frac >> 7 >> -exp;
+  else
+    assert(0);
+  return (f->sign) ? -res : res;
 }
 
 FLOAT Fabs(FLOAT a)
 {
-  if ((a & 0x80000000) == 0)
-    return a;
-  else
-    return -a;
+  return (a > 0) ? a : -a;
 }
 
 /* Functions below are already implemented */
@@ -80,10 +84,11 @@ FLOAT Fsqrt(FLOAT x)
 {
   FLOAT dt, t = int2F(2);
 
-  do {
+  do
+  {
     dt = F_div_int((F_div_F(x, t) - t), 2);
     t += dt;
-  } while(Fabs(dt) > f2F(1e-4));
+  } while (Fabs(dt) > f2F(1e-4));
 
   return t;
 }
@@ -93,11 +98,12 @@ FLOAT Fpow(FLOAT x, FLOAT y)
   /* we only compute x^0.333 */
   FLOAT t2, dt, t = int2F(2);
 
-  do {
+  do
+  {
     t2 = F_mul_F(t, t);
     dt = (F_div_F(x, t2) - t) / 3;
     t += dt;
-  } while(Fabs(dt) > f2F(1e-4));
+  } while (Fabs(dt) > f2F(1e-4));
 
   return t;
 }
