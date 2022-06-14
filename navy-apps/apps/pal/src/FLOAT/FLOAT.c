@@ -4,15 +4,15 @@
 
 FLOAT F_mul_F(FLOAT a, FLOAT b)
 {
-  return ((uint64_t)a * b) >> 16;
+  return ((int64_t)a * (int64_t)b) >> 16;
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b)
 {
   assert(b != 0);
   int sign = 1;
-  a = a < 0 ? -a : a;
-  b = b < 0 ? -b : b;
+  a = Fabs(a);
+  b = Fabs(b);
   if ((a ^ b) & (0x1 << 31))
     sign = -1;
   int res = a / b;
@@ -41,12 +41,12 @@ FLOAT f2F(float a)
    * stack. How do you retrieve it to another variable without
    * performing arithmetic operations on it directly?
    */
-    struct my_float
-    {
-      uint32_t frac : 23;
-      uint32_t exp : 8;
-      uint32_t sign : 1;
-    };
+  struct my_float
+  {
+    uint32_t frac : 23;
+    uint32_t exp : 8;
+    uint32_t sign : 1;
+  };
 
   struct my_float *f = (struct my_float *)&a;
   uint32_t res;
